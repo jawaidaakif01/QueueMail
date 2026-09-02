@@ -1,26 +1,63 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import DashboardLayout from '@/components/DashboardLayout';
 import EmailList from '@/components/EmailList';
 import ComposeView from '@/components/ComposeView';
 import axios from 'axios';
 import { Search, Filter, RefreshCw } from 'lucide-react';
+import { Suspense } from 'react';
 
 const API_URL = 'http://localhost:5000/api';
-// Mock token for development
-const TOKEN = 'mock-jwt-token-123';
-axios.defaults.headers.common['Authorization'] = `Bearer ${TOKEN}`;
 
-export default function Home() {
+function HomeContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  
   const [activeTab, setActiveTab] = useState<'scheduled' | 'sent'>('scheduled');
   const [isComposing, setIsComposing] = useState(false);
   
   const [scheduledJobs, setScheduledJobs] = useState([]);
   const [sentJobs, setSentJobs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [userId, setUserId] = useState<string | null>(null);
   
   const [searchQuery, setSearchQuery] = useState('');
+
+  useEffect(() => {
+    // Handle auth token from URL
+    const urlToken = searchParams.get('token');
+    if (urlToken) {
+      localStorage.setItem('auth_token', urlToken);
+      // Clean up URL
+      router.replace('/');
+    }
+
+    // Handle slack connection
+    const slackConnected = searchParams.get('slack_connected');
+    if (slackConnected) {
+      alert('Slack successfully connected!');
+      router.replace('/');
+    }
+
+    const token = localStorage.getItem('auth_token');
+    if (!token) {
+      router.push('/login');
+      return;
+    }
+
+    // Decode JWT payload (simple base64 decode for frontend)
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      setUserId(payload.userId);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      axios.defaults.headers.common['x-user-id'] = payload.userId; // Pass user ID explicitly for demo routes
+    } catch (e) {
+      console.error(e);
+      router.push('/login');
+    }
+  }, [searchParams, router]);
 
   const fetchJobs = async () => {
     setIsLoading(true);
@@ -114,5 +151,13 @@ export default function Home() {
         </div>
       )}
     </DashboardLayout>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={<div className="p-8 text-center">Loading...</div>}>
+      <HomeContent />
+    </Suspense>
   );
 }

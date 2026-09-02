@@ -16,8 +16,8 @@ export default function LoginPage() {
       <div className="bg-white border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-2xl p-8 w-full max-w-md">
         <h1 className="text-3xl font-bold text-center text-gray-900 mb-8">Login</h1>
         
-        <button 
-          onClick={handleLogin}
+        <a 
+          href="http://localhost:5000/auth/google"
           className="w-full flex items-center justify-center gap-3 bg-[#EAF5F0] hover:bg-[#DDF0E6] text-gray-700 font-medium py-3 px-4 rounded-lg transition-colors mb-6"
         >
           {/* Google Icon SVG */}
@@ -29,7 +29,7 @@ export default function LoginPage() {
             <path fill="none" d="M1 1h22v22H1z" />
           </svg>
           Login with Google
-        </button>
+        </a>
 
         <div className="flex items-center my-6">
           <div className="flex-1 border-t border-gray-200"></div>
