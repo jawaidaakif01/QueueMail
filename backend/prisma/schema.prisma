@@ -1,0 +1,42 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id               String   @id @default(uuid())
+  email            String   @unique
+  name             String?
+  googleId         String?  @unique
+  slackWebhookUrl  String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  jobs             EmailJob[]
+}
+
+model EmailJob {
+  id            String    @id @default(uuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id])
+  subject       String
+  body          String
+  toEmail       String
+  scheduledTime DateTime
+  status        JobStatus @default(PENDING)
+  sentTime      DateTime?
+  error         String?
+  bullJobId     String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+enum JobStatus {
+  PENDING
+  SCHEDULED
+  SENT
+  FAILED
+}
