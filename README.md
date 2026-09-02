@@ -1,6 +1,6 @@
 # ReachInbox Full-stack Email Job Scheduler
 
-This is a production-grade email scheduler service and dashboard built for the ReachInbox Hiring Assignment.
+This is a production-grade email scheduler service and dashboard built for the (Outbox Labs) ReachInbox Hiring Assignment.
 
 ## Features Implemented
 
