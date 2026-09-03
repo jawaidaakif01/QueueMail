@@ -32,6 +32,7 @@ export default function DashboardLayout({
   const [webhookInput, setWebhookInput] = useState('');
   const [isConnecting, setIsConnecting] = useState(false);
   const [webhookError, setWebhookError] = useState('');
+  const [showUserMenu, setShowUserMenu] = useState(false);
 
   const handleConnectSlack = () => {
     if (!userId) { alert('Please login first'); return; }
@@ -148,15 +149,37 @@ export default function DashboardLayout({
         <div className="p-5">
           <div className="text-3xl font-bold tracking-tighter mb-6" style={{ fontFamily: 'monospace' }}>ONB</div>
           
-          <div className="flex items-center justify-between p-2 bg-gray-50 rounded-lg border border-gray-100 mb-4 cursor-pointer hover:bg-gray-100 transition-colors">
-            <div className="flex items-center gap-3">
-              <img src={user.avatar} alt="Avatar" className="w-8 h-8 rounded-full" />
-              <div className="flex flex-col">
-                <span className="text-sm font-medium leading-tight">{user.name}</span>
-                <span className="text-[11px] text-gray-500">{user.email}</span>
+          <div className="relative mb-4">
+            <div 
+              onClick={() => setShowUserMenu(!showUserMenu)}
+              className="flex items-center justify-between p-2 bg-gray-50 rounded-lg border border-gray-100 cursor-pointer hover:bg-gray-100 transition-colors"
+            >
+              <div className="flex items-center gap-3">
+                <img src={user.avatar} alt="Avatar" className="w-8 h-8 rounded-full" />
+                <div className="flex flex-col">
+                  <span className="text-sm font-medium leading-tight">{user.name}</span>
+                  <span className="text-[11px] text-gray-500">{user.email}</span>
+                </div>
               </div>
+              <ChevronDown size={14} className="text-gray-400" />
             </div>
-            <ChevronDown size={14} className="text-gray-400" />
+
+            {showUserMenu && (
+              <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-100 shadow-lg rounded-lg py-1 z-20">
+                <button
+                  onClick={() => {
+                    localStorage.removeItem('auth_token');
+                    window.location.href = '/login';
+                  }}
+                  className="w-full text-left px-3 py-2 text-xs text-red-600 hover:bg-red-50 flex items-center gap-2 font-medium"
+                >
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                  </svg>
+                  Logout
+                </button>
+              </div>
+            )}
           </div>
 
           <button 
