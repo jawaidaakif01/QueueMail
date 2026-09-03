@@ -10,6 +10,7 @@ import router from './routes';
 import { initElasticsearch } from './elasticsearch';
 
 const app = express();
+// Force nodemon restart
 const PORT = process.env.PORT || 5000;
 
 app.use(cors());
@@ -24,11 +25,6 @@ createBullBoard({
 });
 app.use('/admin/queues', serverAdapter.getRouter());
 
-// Auth Routes (Mocked for now, need actual Google OAuth later)
-app.post('/api/auth/google', async (req, res) => {
-  // TODO: implement real google auth
-  res.json({ token: 'mock-jwt-token', user: { name: 'Demo User' } });
-});
 
 app.use('/api', router);
 

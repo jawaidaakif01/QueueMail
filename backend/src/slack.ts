@@ -4,8 +4,10 @@ import prisma from './prisma';
 export const sendSlackRateLimitNotification = async (userId: string) => {
   try {
     const user = await prisma.user.findUnique({ where: { id: userId } });
-    if (!user || !user.slackWebhookUrl) {
-      // User hasn't connected Slack
+    // Fall back to env-level webhook URL if user hasn't set their own
+    const webhookUrl = user?.slackWebhookUrl || process.env.SLACK_WEBHOOK_URL;
+    if (!webhookUrl) {
+      console.log('No Slack webhook URL configured. Skipping notification.');
       return;
     }
 
@@ -13,7 +15,7 @@ export const sendSlackRateLimitNotification = async (userId: string) => {
       text: `⚠️ *Rate Limit Reached* ⚠️\nYour account has reached the maximum emails per hour limit. Further emails have been rescheduled to the next available hour window.`
     };
 
-    await axios.post(user.slackWebhookUrl, payload, {
+    await axios.post(webhookUrl, payload, {
       headers: {
         'Content-Type': 'application/json'
       }

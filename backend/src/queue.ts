@@ -43,6 +43,7 @@ const worker = new Worker(
     if (count > maxPerHour) {
       console.log(`Rate limit reached for ${userId}. Rescheduling job ${job.id}`);
       
+
       // Calculate delay until the start of the next hour
       const now = new Date();
       const nextHour = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours() + 1, 0, 0, 0);

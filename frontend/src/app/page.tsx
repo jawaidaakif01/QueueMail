@@ -107,6 +107,7 @@ function HomeContent() {
       onCompose={() => setIsComposing(true)}
       scheduledCount={scheduledJobs.length}
       sentCount={sentJobs.length}
+      userId={userId}
     >
       {isComposing ? (
         <ComposeView 

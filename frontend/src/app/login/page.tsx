@@ -17,7 +17,7 @@ export default function LoginPage() {
         <h1 className="text-3xl font-bold text-center text-gray-900 mb-8">Login</h1>
         
         <a 
-          href="http://localhost:5000/auth/google"
+          href="http://localhost:5000/api/auth/google"
           className="w-full flex items-center justify-center gap-3 bg-[#EAF5F0] hover:bg-[#DDF0E6] text-gray-700 font-medium py-3 px-4 rounded-lg transition-colors mb-6"
         >
           {/* Google Icon SVG */}
@@ -37,19 +37,22 @@ export default function LoginPage() {
           <div className="flex-1 border-t border-gray-200"></div>
         </div>
 
-        <form onSubmit={handleLogin} className="space-y-4">
+        <form className="space-y-4" onSubmit={(e) => {
+          e.preventDefault();
+          window.location.href = "http://localhost:5000/api/auth/google";
+        }}>
           <div>
             <input 
               type="email" 
               placeholder="Email ID" 
-              className="w-full bg-[#F7F9F8] border-none rounded-lg px-4 py-3.5 text-sm focus:ring-2 focus:ring-[#10A37F] outline-none placeholder:text-gray-400 transition-shadow"
+              className="w-full bg-[#F7F9F8] border-none rounded-lg px-4 py-3.5 text-sm focus:ring-2 focus:ring-[#10A37F] outline-none placeholder:text-gray-400 transition-shadow text-gray-900"
             />
           </div>
           <div>
             <input 
               type="password" 
               placeholder="Password" 
-              className="w-full bg-[#F7F9F8] border-none rounded-lg px-4 py-3.5 text-sm focus:ring-2 focus:ring-[#10A37F] outline-none placeholder:text-gray-400 transition-shadow"
+              className="w-full bg-[#F7F9F8] border-none rounded-lg px-4 py-3.5 text-sm focus:ring-2 focus:ring-[#10A37F] outline-none placeholder:text-gray-400 transition-shadow text-gray-900"
             />
           </div>
           <button 
@@ -59,6 +62,7 @@ export default function LoginPage() {
             Login
           </button>
         </form>
+
       </div>
     </div>
   );
