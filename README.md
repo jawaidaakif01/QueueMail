@@ -1,8 +1,12 @@
-# ReachInbox Full-stack Email Job Scheduler
+# 📬 MailFlow — Distributed Email Scheduler & Dashboard
 
-A production-grade, distributed email scheduler service and real-time dashboard built strictly according to the ReachInbox / Outbox Labs Hiring Assignment requirements.
+A production-grade, full-stack email campaign scheduling platform built with **Node.js**, **BullMQ**, **Redis**, **PostgreSQL**, and **Next.js**. Schedule bulk campaigns, enforce smart rate limiting, monitor live queue execution, and get instant Slack alerts — all in one sleek dashboard.
 
----
+![Backend](https://img.shields.io/badge/Backend-Node.js%20%7C%20TypeScript-green?style=flat-square)
+![Queue](https://img.shields.io/badge/Queue-BullMQ%20%7C%20Redis-red?style=flat-square)
+![DB](https://img.shields.io/badge/DB-PostgreSQL%20%7C%20Prisma-blue?style=flat-square)
+![Search](https://img.shields.io/badge/Search-Elasticsearch-yellow?style=flat-square)
+![Frontend](https://img.shields.io/badge/Frontend-Next.js%20%7C%20Tailwind-black?style=flat-square)
 
 ## 📑 Table of Contents
 - [Architecture Overview](#-architecture-overview)
@@ -27,7 +31,7 @@ A production-grade, distributed email scheduler service and real-time dashboard 
 ### How Scheduling Works
 - Email scheduling requests are received via `POST /api/schedule`.
 - Jobs are persisted in **PostgreSQL** with status `SCHEDULED` and simultaneously dispatched into **BullMQ** as delayed jobs (`emailQueue.add('send-email', data, { delay })`).
-- **No cron jobs** are used (meeting strict assignment constraints). Redis handles timer triggers natively and accurately down to the millisecond.
+- **No cron jobs** are used. Redis handles timer triggers natively and accurately down to the millisecond.
 - Workers dequeue jobs concurrently, execute the rate-limit checks, and dispatch real SMTP emails via **Ethereal Email**.
 
 ### Persistence on Server Restarts
@@ -112,7 +116,7 @@ npm run dev
 
 ---
 
-## 🧪 Step-by-Step Evaluator Test Guide
+## 🧪 Testing the Features
 
 ### 1. Login with Google
 1. Open `http://localhost:3000/login`.
@@ -159,3 +163,15 @@ npm run dev
 1. **Frontend CSV Parsing**: CSV parsing is handled client-side using `PapaParse` to provide instantaneous feedback on total valid email rows detected before dispatching payloads.
 2. **Synchronous Elasticsearch Indexing**: Email metadata is indexed directly upon creation. In an ultra-high-throughput enterprise environment (millions of emails/sec), an asynchronous event streaming pipeline (e.g. Kafka or Debezium CDC) would be preferred.
 3. **Idempotency**: Handled by tracking unique database job IDs and checking job state before dispatch.
+
+---
+
+## 🤝 Contributing
+
+Pull requests are welcome! For major changes, please open an issue first to discuss what you'd like to change.
+
+---
+
+## 📄 License
+
+[MIT](https://choosealicense.com/licenses/mit/)
