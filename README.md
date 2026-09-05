@@ -1,4 +1,4 @@
-# 📬 MailFlow — Distributed Email Scheduler & Dashboard
+# 📬 QueueMail — Distributed Email Scheduler & Dashboard
 
 A production-grade, full-stack email campaign scheduling platform built with **Node.js**, **BullMQ**, **Redis**, **PostgreSQL**, and **Next.js**. Schedule bulk campaigns, enforce smart rate limiting, monitor live queue execution, and get instant Slack alerts — all in one sleek dashboard.
 
